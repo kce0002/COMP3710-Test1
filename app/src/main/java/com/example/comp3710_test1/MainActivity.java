@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        df = new DecimalFormat("#.##");
+        df = new DecimalFormat("0.00");
         historyList = new ArrayList<>();
         int historySize = 0;
         String historyElement = "";
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             String s = prefs.getString("history" + i, historyElement);
             tv.setText(s);
             histView.addView(tv);
+            historyList.add(s);
         }
     }
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         double amount = Double.parseDouble(money.getText().toString());
         String desc = description.getText().toString();
 
-        String result = "Added $" + amount + " on " + dateString + " from " + desc;
+        String result = "Added $" + df.format(amount) + " on " + dateString + " from " + desc;
         historyList.add(result);
         currentBalance += amount;
 
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(result);
 
         histView.addView(tv);
-        balance.setText("Current Balance: $" + currentBalance);
+        balance.setText("Current Balance: $" + df.format(currentBalance));
     }
 
     public void subtractAction(View v) {
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         double amount = Double.parseDouble(money.getText().toString());
         String desc = description.getText().toString();
 
-        String result = "Spent $" + amount + " on " + dateString + " for " + desc;
+        String result = "Spent $" + df.format(amount) + " on " + dateString + " for " + desc;
         historyList.add(result);
         currentBalance -= amount;
 
@@ -105,15 +106,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setText(result);
 
         histView.addView(tv);
-        balance.setText("Current Balance: $" + currentBalance);
-    }
-
-    public void updateHistory() {
-        for (String s : historyList) {
-            TextView tv = new TextView(MainActivity.this);
-            tv.setText(s);
-            histView.addView(tv);
-        }
+        balance.setText("Current Balance: $" + df.format(currentBalance));
     }
 
 }
